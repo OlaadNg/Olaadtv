@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model User {
+  id                String      @id @default(cuid())
+  name              String
+  email             String      @unique
+  password          String
+  role              UserRole    @default(USER)
+  watchlist         Json        @default("[]")
+  watchHistory      Json        @default("[]")
+  subscriptionStatus String     @default("FREE")
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  movies      Movie[]
+  createdAt   DateTime @default(now())
+}
+
+model Movie {
+  id            String    @id @default(cuid())
+  title         String    @unique
+  description   String
+  videoUrl      String
+  trailerUrl    String
+  thumbnail     String
+  genre         Json
+  year          Int
+  cast          Json
+  duration      Int
+  views         Int       @default(0)
+  rating        Float     @default(0)
+  language      String    @default("English")
+  isSeries      Boolean   @default(false)
+  episodeCount  Int       @default(1)
+  featured      Boolean   @default(false)
+  categoryId    String?
+  category      Category? @relation(fields: [categoryId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Subscription {
+  id          String    @id @default(cuid())
+  userId      String
+  planType    String
+  status      String
+  expiryDate  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
