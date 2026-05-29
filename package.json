@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.10.1",
+    "@vercel/analytics": "^2.0.1",
     "bcryptjs": "^3.0.3",
     "framer-motion": "^12.40.0",
     "jsonwebtoken": "^9.0.3",
